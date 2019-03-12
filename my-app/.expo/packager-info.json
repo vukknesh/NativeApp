@@ -1,0 +1,10 @@
+{
+  "devToolsPort": 19003,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 12724,
+  "expoServerNgrokUrl": "https://v6-zfd.anonymous.my-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.v6-zfd.anonymous.my-app.exp.direct",
+  "ngrokPid": 4184,
+  "webpackServerPort": null
+}
