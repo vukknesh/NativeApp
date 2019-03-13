@@ -1,43 +1,57 @@
 import React from "react";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
 import ListItem from "./src/components/ListItem/ListItem";
+import InputBar from "./src/components/InputBar/InputBar";
+import PlaceDetail from "./src/components/PlaceDetail/PlaceDetail";
+import placeImage from "./src/boom.jpg";
 
 export default class App extends React.Component {
   state = {
-    placeName: "",
-    places: []
+    places: [],
+    selectedPlace: null
   };
-  placeNameChangeHandler = e => {
-    this.setState({
-      placeName: e
-    });
-  };
-  btnClick = e => {
-    if (this.state.placeName.trim() === "") {
-      return;
-    }
+
+  placeAdded = placeName => {
     this.setState(prevState => {
       return {
-        places: prevState.places.concat(prevState.placeName)
+        places: prevState.places.concat(placeName)
       };
     });
-    this.setState({ placeName: "" });
   };
+
+  onItemDeleted = i => {
+    this.setState(prevState => {
+      return {
+        places: prevState.places.filter((place, index) => {
+          return i !== index;
+        })
+      };
+    });
+  };
+
+  placeSelectedHandler = key => {
+    this.setState(prevState => {
+      selectedPlace: prevState.places.find(place => {
+        return place.key === key;
+      });
+    });
+  };
+
   render() {
     const placesOutput = this.state.places.map((place, index) => (
-      <ListItem key={index} placeName={place} />
+      <ListItem
+        key={index}
+        onItemPressed={() => {
+          this.onItemDeleted(index);
+        }}
+        placeName={place}
+      />
     ));
     return (
       <View style={styles.container}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.placeInput}
-            value={this.state.placeName}
-            onChangeText={this.placeNameChangeHandler}
-            placeholder="An awesome frase"
-          />
-          <Button style={styles.placeBtn} onPress={this.btnClick} title="Add" />
-        </View>
+        <PlaceDetail selectedPlace={this.placeSelectedHandler} />
+        <InputBar placeAdded={this.placeAdded} />
+        <Image src={placeImage} />
         <View style={styles.listContainer}>{placesOutput}</View>
       </View>
     );
